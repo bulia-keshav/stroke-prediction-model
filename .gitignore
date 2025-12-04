@@ -32,3 +32,6 @@ mrs-prediction-3patient/
 
 # Mac
 *.DS_Store
+
+# Images folder
+images/
