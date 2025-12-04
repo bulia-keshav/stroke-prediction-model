@@ -32,7 +32,7 @@ What’s in this repo
 
 - `images/` — Example image folders used for visualization and training (MRI slices, masks, overlays). 
 
-Quick workflow (how things fit together)
+workflow 
 ---------------------------------------
 1. Preprocessing: normalize and resample source MR/CT volumes (see `Scripts/Preprocessing/`).
 2. Train U‑Net: use `Scripts/UNET/training.ipynb` to train and export a U‑Net model. The training notebook contains metrics, regularization experiments, and final saved weights.
@@ -45,28 +45,19 @@ Reproducibility & usage notes
 - The inference notebook (`Scripts/Prediction/Prediction.ipynb`) expects NIfTI/.nrrd patient data under `Scripts/Prediction/Data/` for single-case runs.
 - Large model files and environment-specific artifacts are intentionally not included in version control by default. See `.gitignore`.
 
-Key metrics (example run)
+Key metrics 
 -------------------------
 - Baseline XGBoost accuracy (original volumes): ~80.8% on test split
-- Improved pipeline with new U‑Net volumes: ~86.5% accuracy (≈ +5.7 percentage points)
-- U‑Net validation F1 (improved, regularized model): ≈0.067 (for slice-level segmentation metrics in this run) and IoU ≈0.11. While slice-level F1 is modest due to class imbalance, volume-level correlation to ground truth was strong (~0.73) and produced practical downstream benefits.
+- Improved pipeline with new U‑Net volumes: ~86.5% accuracy (≈ +5.7 percentage points) 
+- Recall improvement for poor outcome class: 38% → 77%
+
 
 Notes on class imbalance and best practices
 ------------------------------------------
 - Lesions are very sparse in many MRI slices (<<1% positive pixels). For this reason the notebooks use combined loss (BCE + Dice), heavy regularization, augmentation, and careful validation splits to avoid patient-level leakage.
-- When retraining, ensure train/val/test splits are by patient to avoid optimistic results.
 
 How to run the comparison experiment quickly
 ------------------------------------------
 1. In `Scripts/UNET/training.ipynb` ensure the final model is saved to `Scripts/Prediction/UNET_improved_regularized.h5`.
 2. Open `Scripts/Prediction/Compare_Models.ipynb` and run the cells. That notebook re-runs the clinical XGBoost pipeline with the new volumes and reports the direct change from the baseline.
-
-License & data
----------------
-- No new external data is included. Use with your institutional data following local regulations.
-- Add a license file if you want a specific license (MIT, Apache-2.0, etc.).
-
-Contact / Notes
-----------------
-For questions about reproducing training runs, evaluating segmentations or integrating the model into a larger pipeline (for example a web app or batch inference), check the notebooks or reach out to the repository owner.
 
