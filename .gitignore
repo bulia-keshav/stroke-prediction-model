@@ -35,3 +35,26 @@ mrs-prediction-3patient/
 
 # Images folder
 images/
+
+# Patient Data - NEVER COMMIT
+Slices/
+Scripts/Prediction/Data/
+**/MRIs/
+**/Masks/
+**/Mask/
+**/*patient*/
+**/*case*/
+
+# Medical Image Formats
+*.nii
+*.nii.gz
+*.nrrd
+*.dcm
+*.dicom
+
+# Large Data Files
+*.h5
+*.hdf5
+*.mat
+*.npz
+
